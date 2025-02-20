@@ -27,9 +27,10 @@ public class WebSecurity  {
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
         AuthenticationManager authenticationManager = getAuthenticationFilter(http);
 
-
         http.csrf( (csrf) -> csrf.disable());
 
+        http.authorizeHttpRequests((auth)->
+                auth.requestMatchers("actuator/**").permitAll());
 
         http.authorizeHttpRequests((authz) ->
                         authz.requestMatchers("/**")
