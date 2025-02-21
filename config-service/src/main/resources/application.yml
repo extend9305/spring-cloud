@@ -7,4 +7,5 @@ spring:
       name: config-service
       server:
         git:
-          uri: file:///Users/dongsulee/IdeaProjects/springcloud/git-local-repo
+          uri: file:///Users/dongsulee/IdeaProjects/extend9305/spring-cloud/git-local-repo
+          search-paths: "**"

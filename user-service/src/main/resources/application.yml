@@ -3,6 +3,8 @@ server:
 
 
 spring:
+  profiles:
+    active: prod
   cloud:
     config:
       name: ecommerce

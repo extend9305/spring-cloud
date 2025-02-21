@@ -30,11 +30,11 @@ public class WebSecurity  {
         http.csrf( (csrf) -> csrf.disable());
 
         http.authorizeHttpRequests((auth)->
-                auth.requestMatchers("actuator/**").permitAll());
+                auth.requestMatchers("actuator/**","/h2-console").permitAll());
 
         http.authorizeHttpRequests((authz) ->
                         authz.requestMatchers("/**")
-                        .access(new WebExpressionAuthorizationManager(" hasIpAddress('127.0.0.1') or hasIpAddress('192.168.0.3')")) // host pc ip address
+                        .access(new WebExpressionAuthorizationManager(" hasIpAddress('127.0.0.1') or hasIpAddress('10.200.193.189')")) // host pc ip address
                         .anyRequest()
                         .authenticated()
                 )
