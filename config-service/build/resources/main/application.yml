@@ -2,10 +2,15 @@ server:
   port: 8888
 
 spring:
+  profiles:
+    active: native
   cloud:
     config:
       name: config-service
       server:
+        native:
+          search-locations: file://../native-local-repo
         git:
-          uri: file:///Users/dongsulee/IdeaProjects/extend9305/spring-cloud/git-local-repo
-          search-paths: "**"
+          skip-ssl-validation: true
+          uri: https://github.com/extend9305/spring-cloud.git
+          search-paths: git-local-repo
