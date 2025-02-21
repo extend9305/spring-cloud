@@ -7,6 +7,11 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka
 spring:
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
   profiles:
     active: prod
   application:
@@ -97,4 +102,4 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,refresh,beans,httpexchanges
+        include: health,refresh,beans,httpexchanges,busrefresh

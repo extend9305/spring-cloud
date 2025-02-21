@@ -3,6 +3,11 @@ server:
 
 
 spring:
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
   profiles:
     active: prod
   cloud:
@@ -48,7 +53,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,refresh,beans
+        include: health,refresh,beans,busrefresh
 #token:
 #  expiration_time: 86400000
 #  secret: user_token
