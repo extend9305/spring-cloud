@@ -2,6 +2,5 @@ token:
   # expiration_time: 864000000
   # secret: user_token_ecommerce
   expiration_time: 864000000
-  secret: my_token_prod_changed
-gateway:
+  secret: my_token_prod
   ip: 192.168.0.3
