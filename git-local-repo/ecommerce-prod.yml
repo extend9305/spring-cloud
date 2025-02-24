@@ -2,5 +2,5 @@ token:
   # expiration_time: 864000000
   # secret: user_token_ecommerce
   expiration_time: 864000000
-  secret: "{cipher}AYBSoY36108HhdwbhzJjDKmN/egyC35y8eTIyXsWucvngITGnkThg8wuineI+X8NE2ouW793gohgge9Z2sbHvj1iqPP43l6qHGExEjmSWwf3IR8oMpTO6+HmUrdnuFG8SNHmkxHXxhmiWGpDecYqi60W/kCVukM0dPMStFs7vCJmJP3AVN8mjksbCqe4524tKR0PLxLNCQp63eT1GAz/R7PpNEPMXtc/AS23u4qxoAX2N4GD5XXsH0mM258DH2OGHf1rGuLwrIig7DxED1NSIMx/F/6ufT+eS04fsXX6k7AC9GQ6Uwpfo3J1iFKssSu6KY18t3RaSBP/PckrXi6Ju3QK7+p4ZjWnwnyhBn1LYFV+fOqusiR7x/vMqlP+4YNB6UDUhT/UTwQjsjqnYiVqP5CdVuyBk9W8AgK6NBvfq+UgBrIImnwbyQFIBUtQsBgVyYjv363Bm0H1q1MrWa/NGlzuk7EVOCyAPlgZHmaC1jmcQJqAYUEkYGi9AZ/pPPIKy++r740XCBm1Vhj0fG4msfs1zHBq1XI0+y3b/jD3HZAqdg=="
+  secret: "user_token_user_serive"
   ip: 192.168.0.3
