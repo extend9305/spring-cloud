@@ -21,3 +21,9 @@ management:
     web:
       exposure:
         include: health, busrefresh
+encrypt:
+  key-store:
+    location: file:../keystore/apiEncryptionKey.jks
+    password: 1q2w3e4r
+    alias: apiEncryptionKey
+#  key: 1231dskqoidk912i390i1e92190
