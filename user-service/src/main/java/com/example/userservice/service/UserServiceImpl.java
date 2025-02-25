@@ -1,28 +1,29 @@
 package com.example.userservice.service;
 
+import com.example.userservice.client.OrderServiceClient;
 import com.example.userservice.dto.UserDto;
+import com.example.userservice.error.FeignErrorDecoder;
 import com.example.userservice.jpa.UserEntity;
 import com.example.userservice.jpa.UserRepository;
 import com.example.userservice.vo.ResponseOrder;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.cloud.commons.config.DefaultsBindHandlerAdvisor;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -30,7 +31,7 @@ public class UserServiceImpl implements UserService {
     private final DefaultsBindHandlerAdvisor.MappingsProvider mappingsProvider;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final Environment environment;
-    private final RestTemplate restTemplate;
+    private final OrderServiceClient orderServiceClient;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -74,13 +75,25 @@ public class UserServiceImpl implements UserService {
         }
 
         UserDto userDto = new ModelMapper().map(userEntity, UserDto.class);
-        System.out.println(environment.getProperty("order_service.url"));
-        String orderUrl = String.format(environment.getProperty("order_service.url"),userId);
-
-        ResponseEntity<List<ResponseOrder>> ordersResponse = restTemplate.exchange(orderUrl, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<ResponseOrder>>() {
-                });
-        List<ResponseOrder> orders = ordersResponse.getBody();
+//        String orderUrl = String.format(environment.getProperty("order_service.url"),userId);
+//        ResponseEntity<List<ResponseOrder>> ordersResponse = restTemplate.exchange(orderUrl, HttpMethod.GET, null,
+//                new ParameterizedTypeReference<List<ResponseOrder>>() {
+//                });
+//        List<ResponseOrder> orders = ordersResponse.getBody();
+        /**
+         * Using a feign client
+         */
+//        List<ResponseOrder> orders = null;
+//        try {
+//            orders = orderServiceClient.getOrders(userId);
+//            userDto.setOrders(orders);
+//        }catch (FeignException e){
+//            log.error(e.getMessage());
+//        }
+        /**
+         * ErrorDecoder
+         */
+        List<ResponseOrder> orders = orderServiceClient.getOrders(userId);
         userDto.setOrders(orders);
 
         return userDto;

@@ -28,6 +28,9 @@ ext {
 }
 
 dependencies {
+    // OpenFeign
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
     // RabbitMQ
     implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
 
