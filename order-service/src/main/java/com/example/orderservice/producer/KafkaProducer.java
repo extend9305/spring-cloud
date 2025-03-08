@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class KafkaOrderProducer {
+public class KafkaProducer {
     private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public OrderDto sendOrder(String kafkaTopic, OrderDto orderDto) {
+    public OrderDto send(String kafkaTopic, OrderDto orderDto) {
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonInString = "";
 

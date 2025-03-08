@@ -28,6 +28,9 @@ ext {
 }
 
 dependencies {
+    //circuitbreaker
+    implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
+
     // OpenFeign
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
