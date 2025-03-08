@@ -2,6 +2,7 @@ package com.example.orderservice.controller;
 
 import com.example.orderservice.dto.OrderDto;
 import com.example.orderservice.jpa.OrderEntity;
+import com.example.orderservice.producer.KafkaOrderProducer;
 import com.example.orderservice.service.OrderService;
 import com.example.orderservice.vo.RequestOrder;
 import com.example.orderservice.vo.ResponseOrder;
@@ -11,10 +12,12 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/order-service")
@@ -22,6 +25,7 @@ import java.util.List;
 public class OrderController {
     private final Environment env;
     private final OrderService orderService;
+    private final KafkaOrderProducer kafkaOrderProducer;
 
     @GetMapping("/health-check")
     public String status() {
@@ -37,10 +41,23 @@ public class OrderController {
 
         OrderDto orderDto = modelMapper.map(orderDetails, OrderDto.class);
         orderDto.setUserId(userId);
+        /**
+         * jpa
+         */
+        //OrderDto createdOrder = orderService.createOrder(orderDto);
 
-        OrderDto createdOrder = orderService.createOrder(orderDto);
+        /**
+         * kafka
+         */
+        orderDto.setOrderId(UUID.randomUUID().toString());
+        orderDto.setTotalPrice(orderDetails.getQty() * orderDetails.getUnitPrice());
+        ResponseOrder responseOrder = modelMapper.map(orderDto, ResponseOrder.class);
 
-        ResponseOrder responseOrder = modelMapper.map(createdOrder, ResponseOrder.class);
+        /**
+         * Send an order to the kafka
+         */
+        kafkaOrderProducer.sendOrder("example-order-kafka",orderDto);
+        //todo kafka producer create
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseOrder);
     }
