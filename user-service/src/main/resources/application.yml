@@ -1,20 +1,29 @@
 server:
   port: 0
-
-
 spring:
+  tracing:
+    enabled: true
+  sleuth:
+    http:
+      enabled: true
   rabbitmq:
     host: 127.0.0.1
     port: 5672
     username: guest
     password: guest
   cloud:
+    openfeign:
+      micrometer:
+        enabled: true
     config:
       name: user-service
   config:
     import: optional:configserver:http://localhost:8888
   application:
     name: user-service
+  zipkin:
+    base-url: http://localhost:9411
+    enabled: true
 #  datasource:
 #    driver-class-name: org.h2.Driver
 #    url: jdbc:h2:mem:testdb
@@ -45,16 +54,27 @@ greeting:
   message: Welcome to the Simple E-commerce
 logging:
   level:
-    com.example.userservice : DEBUG
-
+    com.example.userservice.client: DEBUG
+  pattern:
+    correlation: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
 management:
   endpoints:
     web:
       exposure:
         include: health,refresh,beans,busrefresh
+  tracing:
+    sampling:
+      probability: 1.0
+    propagation:
+      consume: B3
+      produce: B3
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
 #token:
 #  expiration_time: 86400000
 #  secret: user_token
+
 
 
 

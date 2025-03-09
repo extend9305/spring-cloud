@@ -2,6 +2,15 @@ server:
   port: 0
 
 spring:
+  tracing:
+    enabled: true
+  sleuth:
+    http:
+      enabled: true
+  cloud:
+    openfeign:
+      micrometer:
+        enabled: true
   application:
     name: order-service
   datasource:
@@ -9,6 +18,9 @@ spring:
     url: jdbc:mariadb://localhost:3306/mydb
     username: root
     password: test1357
+  zipkin:
+    base-url: http://localhost:9411
+    enabled: true
   jpa:
     hibernate:
       ddl-auto: update
@@ -39,4 +51,16 @@ greeting:
 
 logging:
   level:
-    com.example.orderservice : debug
+    com.example.orderservice: DEBUG
+  pattern:
+    correlation: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+    propagation:
+      consume: B3
+      produce: B3
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans

@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.4.2'
+    id 'org.springframework.boot' version '3.4.1'
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
@@ -28,6 +28,15 @@ ext {
 }
 
 dependencies {
+    // brave
+    implementation 'io.github.openfeign:feign-micrometer'
+    implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
+    implementation 'io.zipkin.brave:brave-instrumentation-spring-web'
+    implementation 'io.micrometer:micrometer-observation'
+    implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+
+    // actuator
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
     // kafka
     implementation 'org.springframework.kafka:spring-kafka'
     // model mapper
@@ -44,6 +53,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
 }
 
 dependencyManagement {

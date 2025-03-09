@@ -7,6 +7,7 @@ import com.example.orderservice.service.OrderService;
 import com.example.orderservice.vo.RequestOrder;
 import com.example.orderservice.vo.ResponseOrder;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.core.env.Environment;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("/order-service")
 @RequiredArgsConstructor
@@ -36,11 +38,15 @@ public class OrderController {
     //http://127.0.0.1/order-service/{user_id}/order
     @PostMapping("/{userId}/orders")
     public ResponseEntity<ResponseOrder> createOrder(@PathVariable("userId") String userId, @RequestBody RequestOrder orderDetails) {
+        log.info("Before add order data");
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         OrderDto orderDto = modelMapper.map(orderDetails, OrderDto.class);
         orderDto.setUserId(userId);
+
+
+
         /**
          * jpa
          */
@@ -56,17 +62,24 @@ public class OrderController {
          */
         kafkaProducer.send("example-order-kafka",orderDto);
         orderProducer.send("orders",orderDto);
-
-
         ResponseOrder responseOrder = modelMapper.map(orderDto, ResponseOrder.class);
+
+        log.info("After add order data");
         return ResponseEntity.status(HttpStatus.CREATED).body(responseOrder);
     }
 
     @GetMapping("/{userId}/orders")
     public ResponseEntity<List<ResponseOrder>> getOrder(@PathVariable("userId") String userId) {
+        log.info("Before call order data");
+        try{
+            Thread.sleep(1000);
+            throw  new Exception("장애 발생");
+        }catch (Exception e){
+            log.warn(e.getMessage());
+        }
         List<ResponseOrder> responseOrderList = new ArrayList<>();
         orderService.getOrdersByUserId(userId).forEach(order -> responseOrderList.add(new ModelMapper().map(order, ResponseOrder.class)));
-
+        log.info("After call order data");
         return ResponseEntity.status(HttpStatus.CREATED).body(responseOrderList);
     }
 
